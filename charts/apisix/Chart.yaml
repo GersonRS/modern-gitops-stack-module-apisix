@@ -1,0 +1,7 @@
+apiVersion: v2
+dependencies:
+- name: apisix
+  repository: https://charts.apiseven.com
+  version: "2.12.2"
+name: apisix
+version: "0"
