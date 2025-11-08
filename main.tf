@@ -113,7 +113,7 @@ resource "null_resource" "this" {
 }
 data "kubernetes_service" "apisix" {
   metadata {
-    name      = format("%s%s", local.helm_values.0.apisix.fullnameOverride, "gateway")
+    name      = format("%s-%s", local.helm_values.0.apisix.fullnameOverride, "gateway")
     namespace = "ingress-apisix"
   }
 
