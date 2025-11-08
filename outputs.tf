@@ -3,7 +3,7 @@ output "id" {
   value       = resource.null_resource.this.id
 }
 
-output "external_ip" {
-  description = "External IP address of APISIX LB service."
-  value       = data.kubernetes_service.apisix.status.0.load_balancer.0.ingress.0.ip
-}
+# output "external_ip" {
+#   description = "External IP address of APISIX LB service."
+#   value       = data.kubernetes_service.apisix.status.0.load_balancer.0.ingress.0.ip
+# }
