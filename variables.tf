@@ -10,6 +10,7 @@ variable "cluster_name" {
 variable "base_domain" {
   description = "Base domain of the cluster. Value used for the ingress' URL of the application."
   type        = string
+  default     = ""
 }
 
 variable "subdomain" {
