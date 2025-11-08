@@ -1,7 +1,7 @@
 locals {
-  domain            = format("apisix.%s", trimprefix("${var.subdomain}.${var.base_domain}", "."))
-  domain_controller = format("apisix-controller.%s", trimprefix("${var.subdomain}.${var.base_domain}", "."))
-  domain_admin      = format("apisix-admin.%s", trimprefix("${var.subdomain}.${var.base_domain}", "."))
+  # domain            = format("apisix.%s", trimprefix("${var.subdomain}.${var.base_domain}", "."))
+  # domain_controller = format("apisix-controller.%s", trimprefix("${var.subdomain}.${var.base_domain}", "."))
+  # domain_admin      = format("apisix-admin.%s", trimprefix("${var.subdomain}.${var.base_domain}", "."))
 
   helm_values = [{
     useDaemonSet = false
@@ -13,36 +13,40 @@ locals {
     service = {
       type = "LoadBalancer"
     }
-    ingress = {
-      enabled = true
-      # annotations = {}
-      hosts = [{
-        host  = local.domain
-        paths = ["/"]
-      }]
-      tls = [
-        {
-          hosts      = [local.domain]
-          secretName = "apisix-tls"
-        }
-      ]
-    }
-    control = {
-      ingress = {
-        enabled = true
-        # annotations = {}
-        hosts = [{
-          host  = local.domain_controller
-          paths = ["/*"]
-        }]
-        tls = [
-          {
-            hosts      = [local.domain_controller]
-            secretName = "apisix-controller-tls"
-          }
-        ]
-      }
-    }
+    # ingress = {
+    #   enabled = true
+    #   annotations = {
+    #     "cert-manager.io/cluster-issuer" = "${var.cluster_issuer}"
+    #   }
+    #   hosts = [{
+    #     host  = local.domain
+    #     paths = ["/"]
+    #   }]
+    #   tls = [
+    #     {
+    #       hosts      = [local.domain]
+    #       secretName = "apisix-tls"
+    #     }
+    #   ]
+    # }
+    # control = {
+    #   ingress = {
+    #     enabled = true
+    #     annotations = {
+    #       "cert-manager.io/cluster-issuer" = "${var.cluster_issuer}"
+    #     }
+    #     hosts = [{
+    #       host  = local.domain_controller
+    #       paths = ["/*"]
+    #     }]
+    #     tls = [
+    #       {
+    #         hosts      = [local.domain_controller]
+    #         secretName = "apisix-controller-tls"
+    #       }
+    #     ]
+    #   }
+    # }
     metrics = {
       serviceMonitor = {
         enabled   = var.enable_service_monitor
@@ -61,20 +65,22 @@ locals {
           admin  = resource.random_password.password_secret.result
           viewer = resource.random_password.password_secret.result
         }
-        ingress = {
-          enabled = true
-          # annotations = {}
-          hosts = [{
-            host  = local.domain_admin
-            paths = ["/*"]
-          }]
-          tls = [
-            {
-              hosts      = [local.domain_admin]
-              secretName = "apisix-admin-tls"
-            }
-          ]
-        }
+        # ingress = {
+        #   enabled = true
+        #   annotations = {
+        #     "cert-manager.io/cluster-issuer" = "${var.cluster_issuer}"
+        #   }
+        #   hosts = [{
+        #     host  = local.domain_admin
+        #     paths = ["/*"]
+        #   }]
+        #   tls = [
+        #     {
+        #       hosts      = [local.domain_admin]
+        #       secretName = "apisix-admin-tls"
+        #     }
+        #   ]
+        # }
       }
       prometheus = {
         enabled = var.enable_service_monitor
