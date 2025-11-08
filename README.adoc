@@ -25,6 +25,8 @@ The following providers are used by this module:
 
 - [[provider_null]] <<provider_null,null>> (>= 3)
 
+- [[provider_kubernetes]] <<provider_kubernetes,kubernetes>>
+
 === Resources
 
 The following resources are used by this module:
@@ -34,6 +36,7 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] (resource)
 - https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.password_secret] (resource)
+- https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/data-sources/service[kubernetes_service.apisix] (data source)
 - https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] (data source)
 
 === Required Inputs
@@ -46,15 +49,17 @@ Description: Name given to the cluster. Value used for naming some the resources
 
 Type: `string`
 
+=== Optional Inputs
+
+The following input variables are optional (have default values):
+
 ==== [[input_base_domain]] <<input_base_domain,base_domain>>
 
 Description: Base domain of the cluster. Value used for the ingress' URL of the application.
 
 Type: `string`
 
-=== Optional Inputs
-
-The following input variables are optional (have default values):
+Default: `""`
 
 ==== [[input_subdomain]] <<input_subdomain,subdomain>>
 
@@ -94,7 +99,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.1.0"`
+Default: `"v1.2.0"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -167,6 +172,10 @@ The following outputs are exported:
 ==== [[output_id]] <<output_id,id>>
 
 Description: ID to pass other modules in order to refer to this module as a dependency.
+
+==== [[output_external_ip]] <<output_external_ip,external_ip>>
+
+Description: External IP address of APISIX LB service.
 // END_TF_DOCS
 
 === Reference in table format 
@@ -195,6 +204,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |[[provider_random]] <<provider_random,random>> |>= 3
 |[[provider_argocd]] <<provider_argocd,argocd>> |>= 6
 |[[provider_utils]] <<provider_utils,utils>> |>= 1
+|[[provider_kubernetes]] <<provider_kubernetes,kubernetes>> |n/a
 |===
 
 = Resources
@@ -207,6 +217,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] |resource
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] |resource
 |https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.password_secret] |resource
+|https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/data-sources/service[kubernetes_service.apisix] |data source
 |https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] |data source
 |===
 
@@ -224,8 +235,8 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |[[input_base_domain]] <<input_base_domain,base_domain>>
 |Base domain of the cluster. Value used for the ingress' URL of the application.
 |`string`
-|n/a
-|yes
+|`""`
+|no
 
 |[[input_subdomain]] <<input_subdomain,subdomain>>
 |Subdomain of the cluster. Value used for the ingress' URL of the application.
@@ -254,7 +265,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.1.0"`
+|`"v1.2.0"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
@@ -321,6 +332,7 @@ object({
 |===
 |Name |Description
 |[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency.
+|[[output_external_ip]] <<output_external_ip,external_ip>> |External IP address of APISIX LB service.
 |===
 // END_TF_TABLES
 ====
