@@ -107,6 +107,17 @@ resource "argocd_application" "this" {
   ]
 }
 
+data "kubernetes_service" "apisix" {
+  metadata {
+    name      = replace(format("%s%s", local.helm_values.0.traefik.fullnameOverride, module.traefik.id), module.traefik.id, "")
+    namespace = "ingress-apisix"
+  }
+
+  depends_on = [
+    resource.argocd_application.this,
+  ]
+}
+
 resource "null_resource" "this" {
   depends_on = [
     resource.argocd_application.this,
